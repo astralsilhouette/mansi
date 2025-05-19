@@ -3,203 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Mansi 💖</title>
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            overflow-x: hidden;
-            height: 100vh;
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fcb69f);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            text-align: center;
-            color: #333;
-        }
-
-        /* Background Gradient Animation */
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Title Animation */
-        h1 {
-            margin-top: 10vh;
-            font-size: 4rem;
-            color: #ff4b5c;
-            animation: fadeInDown 2s ease-in-out;
-        }
-
-        @keyframes fadeInDown {
-            0% { opacity: 0; transform: translateY(-50px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Heart Animation */
-        .heart {
-            width: 100px;
-            height: 100px;
-            background-color: red;
-            position: relative;
-            margin: 30px auto;
-            transform: rotate(-45deg);
-            animation: heartbeat 1.5s infinite;
-        }
-
-        .heart::before, .heart::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-color: red;
-            border-radius: 50%;
-        }
-
-        .heart::before { top: -50px; left: 0; }
-        .heart::after { left: 50px; top: 0; }
-
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1) rotate(-45deg); }
-            50% { transform: scale(1.2) rotate(-45deg); }
-        }
-
-        /* Sliding Text Animation */
-        .message {
-            font-size: 1.5rem;
-            margin: 20px auto;
-            width: 80%;
-            animation: slideIn 3s ease-out;
-        }
-
-        @keyframes slideIn {
-            0% { transform: translateX(-100%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Button Styling */
-        button {
-            margin-top: 20px;
-            padding: 12px 24px;
-            font-size: 1.2rem;
-            color: white;
-            background-color: #ff4b5c;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        button:hover {
-            background-color: #e63950;
-            transform: scale(1.05);
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        /* Scroll Section */
-        .scroll-container {
-            height: 50vh;
-            overflow-y: auto;
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .surprise {
-            font-size: 1.2rem;
-            color: #444;
-            margin: 10px 0;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: reveal 1s forwards;
-        }
-
-        @keyframes reveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Custom Navigation Bar */
-        nav {
-            background-color: #ff4b5c;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 10px;
-            z-index: 100;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-        }
-
-        nav ul li {
-            margin: 0 20px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: #fcb69f;
-        }
-    </style>
+    <title>ManshVerse - Welcome</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="home-page">
+    <div id="star-container"></div>
+    <!-- No separate overlay div, body::before handles aurora effect -->
 
-    <!-- Navigation Bar -->
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-        </ul>
-    </nav>
+    <header class="main-header">
+        <div class="logo">ManshVerse</div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="aboutus.html">Our Story</a></li>
+                <li><a href="letters.html">Letters</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="timeline.html">Timeline</a></li>
+                <li><a href="mansi.html">For Sparsh</a></li> <!-- Sparsh's note FOR MANSI -->
+                <li><a href="sparsh.html">For Mansi</a></li> <!-- Mansi's note FOR SPARSH (from Sparsh) -->
+            </ul>
+        </nav>
+        <button id="music-toggle" aria-label="Toggle Music">🎵</button>
+    </header>
 
-    <!-- Title -->
-    <h1>Hey Mansi! 💕</h1>
+    <main class="content-container index-content">
+        <h1 class="fade-in-up">Welcome to ManshVerse</h1>
+        <p class="fade-in-up delay-1">Our own lil' universe, just for you and me, baby. Built on endless love & crazy dreams. For my Mansi, from your Sparsh.</p>
+        <a href="aboutus.html" class="cta-button fade-in-up delay-2">Enter Our World 💖</a>
+    </main>
 
-    <!-- Animated Heart -->
-    <div class="heart"></div>
+    <audio id="bg-music" loop>
+        <source src="assets/audio/lofi-ambience.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
-    <!-- Sweet Message -->
-    <p class="message">You're one in a billion, and I made this just for you. Hope this makes you smile! ✨</p>
-
-    <!-- Surprise Button -->
-    <button onclick="showSurprise()">Scroll for a Surprise!</button>
-
-    <!-- Hidden Surprise -->
-    <div class="scroll-container" id="surpriseBox" style="display: none;">
-        <p class="surprise" style="animation-delay: 0.5s;">🌟 You light up my world.</p>
-        <p class="surprise" style="animation-delay: 1s;">💕 Every moment with you feels magical.</p>
-        <p class="surprise" style="animation-delay: 1.5s;">😊 I’m so lucky to have you in my life.</p>
-        <p class="surprise" style="animation-delay: 2s;">🌸 You’re beautiful inside and out.</p>
-        <p class="surprise" style="animation-delay: 2.5s;">💖 I hope this little creation made your day!</p>
-    </div>
-
-    <script>
-        function showSurprise() {
-            const surpriseBox = document.getElementById('surpriseBox');
-            surpriseBox.style.display = 'block';
-        }
-    </script>
+    <script src="js/script.js"></script>
 </body>
 </html>

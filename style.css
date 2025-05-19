@@ -1,0 +1,634 @@
+/* --- Variables & Basic Reset --- */
+:root {
+    --soft-purple: #C3B1E1; /* Lilac */
+    --stardust-pink: #FFCAD4; /* Lighter existing pink */
+    --love-pink: #FF69B4; /* Hotter Pink for accents/hearts */
+    --deep-love-pink: #f850a0; /* Slightly deeper hot pink */
+    --blush-red: #E57373; /* Softer, warm red */
+    --galaxy-blue: #1E2A3D; /* Deeper, softer blue */
+    --deep-space-blue: #0c1421; /* Background base */
+    --rose-gold: #B76E79;
+    --text-light: #f0f0f0;
+    --text-dark: #333;
+    --accent-glow: #ff89ba; /* Brighter pink/rose for glows */
+    --heart-color: var(--love-pink);
+
+    --font-handwritten: 'Dancing Script', cursive;
+    --font-main: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    color: var(--text-light);
+    background: linear-gradient(135deg, var(--deep-space-blue) 0%, var(--galaxy-blue) 50%, var(--soft-purple) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+/* Pulsating Aurora Background Layer (Subtle) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 0%, 
+        rgba(255, 105, 180, 0.15) 0%, /* love-pink at top */
+        rgba(195, 177, 225, 0.1) 40%, /* soft-purple middle */
+        transparent 70%);
+    animation: slowPulse 15s infinite alternate ease-in-out;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes slowPulse {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.1); }
+}
+
+
+/* --- Background Stars & Overlay --- */
+#star-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2; /* Behind aurora overlay */
+}
+
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: twinkle 7s infinite ease-in-out;
+    opacity: 0;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.7); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* --- Header & Navigation --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(12, 20, 33, 0.6); /* Slightly darker semi-transparent */
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 105, 180, 0.3); /* love-pink subtle line */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.logo {
+    font-family: var(--font-handwritten);
+    font-size: 2.8em; /* Slightly larger */
+    color: var(--love-pink);
+    text-shadow: 0 0 8px var(--love-pink), 0 0 15px var(--love-pink), 0 0 25px var(--accent-glow);
+    animation: logoGlow 3s infinite alternate;
+}
+
+@keyframes logoGlow {
+    from { text-shadow: 0 0 8px var(--love-pink), 0 0 15px var(--love-pink), 0 0 25px var(--accent-glow); }
+    to { text-shadow: 0 0 12px var(--deep-love-pink), 0 0 22px var(--deep-love-pink), 0 0 35px var(--accent-glow); }
+}
+
+.main-header nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.main-header nav ul li a {
+    color: var(--text-light);
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.1em;
+    padding: 8px 12px; /* Slightly more padding */
+    border-radius: 20px; /* More rounded */
+    transition: all 0.4s ease; /* Smoother transition */
+    position: relative;
+}
+
+.main-header nav ul li a::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--love-pink);
+    transition: width 0.3s ease-out;
+}
+
+.main-header nav ul li a:hover::before,
+.main-header nav ul li a.active::before {
+    width: 70%;
+}
+
+.main-header nav ul li a:hover,
+.main-header nav ul li a.active {
+    color: var(--stardust-pink);
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+#music-toggle {
+    background: none;
+    border: 2px solid var(--love-pink);
+    color: var(--love-pink);
+    font-size: 1.5em;
+    padding: 8px 12px; /* Consistent padding */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#music-toggle:hover {
+    background-color: var(--love-pink);
+    color: var(--deep-space-blue);
+    box-shadow: 0 0 18px var(--love-pink);
+    transform: scale(1.1);
+}
+#music-toggle.playing {
+    color: var(--stardust-pink);
+    border-color: var(--stardust-pink);
+    box-shadow: 0 0 15px var(--stardust-pink), 0 0 5px #fff; /* Extra pop when playing */
+}
+
+
+/* --- Main Content Area --- */
+.content-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.index-content h1 {
+    font-family: var(--font-handwritten);
+    font-size: 5.5em; /* Bigger */
+    color: var(--love-pink);
+    text-shadow: 0 0 10px var(--love-pink), 0 0 20px var(--love-pink), 0 0 40px var(--accent-glow), 0 0 70px var(--stardust-pink);
+    margin-bottom: 20px;
+    animation: titleShimmer 4s infinite alternate ease-in-out;
+}
+
+@keyframes titleShimmer {
+    0% { text-shadow: 0 0 10px var(--love-pink), 0 0 20px var(--love-pink), 0 0 40px var(--accent-glow), 0 0 70px var(--stardust-pink); opacity: 0.9; }
+    50% { text-shadow: 0 0 15px var(--love-pink), 0 0 30px var(--accent-glow), 0 0 50px var(--stardust-pink), 0 0 80px var(--love-pink); opacity: 1; }
+    100% { text-shadow: 0 0 10px var(--love-pink), 0 0 20px var(--love-pink), 0 0 40px var(--accent-glow), 0 0 70px var(--stardust-pink); opacity: 0.9; }
+}
+
+.index-content p {
+    font-size: 1.6em; /* Bigger */
+    color: var(--stardust-pink);
+    margin-bottom: 50px; /* More space */
+    max-width: 700px;
+    line-height: 1.5;
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+.cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--love-pink), var(--blush-red));
+    color: white; /* Brighter text on button */
+    padding: 18px 35px; /* Bigger */
+    text-decoration: none;
+    font-size: 1.3em;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: transform 0.3s ease, box-shadow 0.4s ease;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5); /* love-pink shadow */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-7px) scale(1.08);
+    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.7), 0 0 15px var(--accent-glow);
+}
+
+/* General Page Styling */
+.page-content {
+    justify-content: flex-start;
+    padding-top: 60px;
+    width: 85%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-family: var(--font-handwritten);
+    font-size: 4em; /* Bigger */
+    color: var(--stardust-pink); /* Softer pink for page titles */
+    text-shadow: 0 0 8px var(--stardust-pink), 0 0 15px var(--accent-glow);
+    margin-bottom: 50px;
+}
+.page-title::first-letter {
+    font-size: 1.2em; /* Emphasize first letter */
+    color: var(--love-pink);
+}
+
+.love-quote {
+    font-family: var(--font-handwritten);
+    font-size: 2em; /* Slightly bigger */
+    color: var(--love-pink); /* More prominent */
+    margin-top: 60px;
+    padding: 25px;
+    border: 2px dashed var(--love-pink); /* Dashed border */
+    border-radius: 10px;
+    display: inline-block;
+    text-shadow: 0 0 8px var(--love-pink);
+    background: rgba(255, 105, 180, 0.1);
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.2);
+}
+
+
+/* --- Specific Page Sections --- */
+
+/* About Us Page */
+.story-section {
+    background: rgba(255, 255, 255, 0.07); /* More subtle bg */
+    padding: 30px;
+    margin-bottom: 35px;
+    border-radius: 20px; /* More rounded */
+    border-left: 7px solid var(--love-pink); /* Thicker, love-pink border */
+    text-align: left;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.story-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(255, 105, 180, 0.2);
+}
+.story-section h2 {
+    color: var(--stardust-pink);
+    margin-bottom: 15px;
+    font-size: 2em;
+    font-family: var(--font-handwritten); /* Use handwritten for subheadings too */
+}
+.story-section h2::after { /* Underline effect */
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--love-pink);
+    margin-top: 5px;
+    border-radius: 2px;
+}
+.story-section p {
+    line-height: 1.8; /* More spacing */
+    font-size: 1.15em;
+    color: var(--text-light);
+}
+.story-section strong {
+    color: var(--love-pink); /* love-pink for emphasis */
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--love-pink);
+}
+
+/* Letters Page */
+.letters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
+    width: 100%;
+}
+.letter-card {
+    background: rgba(255, 105, 180, 0.12); /* love-pink tint */
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--love-pink);
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.25);
+    text-align: left;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+.letter-card:hover {
+    transform: translateY(-12px) rotate(1deg); /* Slight rotate on hover */
+    box-shadow: 0 15px 35px rgba(255, 105, 180, 0.4);
+}
+.letter-card h3 {
+    font-family: var(--font-handwritten);
+    color: var(--stardust-pink);
+    font-size: 2em; /* Bigger */
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--stardust-pink);
+}
+.letter-card p {
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 1.05em;
+    color: var(--text-light); /* Ensuring text is light on pinkish bg */
+}
+.letter-card .signature {
+    display: block;
+    text-align: right;
+    font-family: var(--font-handwritten);
+    font-size: 1.6em; /* Bigger */
+    color: var(--rose-gold); /* Keeping rose-gold for signatures for variety */
+    margin-top: 10px;
+}
+
+/* Gallery Page (Image-less) */
+.gallery-intro {
+    font-size: 1.3em; /* Bigger */
+    margin-bottom: 40px;
+    color: var(--stardust-pink);
+    text-shadow: 0 0 5px var(--stardust-pink);
+}
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+.gallery-item-css {
+    border-radius: 15px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+.gallery-item-css:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 12px 35px rgba(255, 105, 180, 0.4);
+}
+.gallery-item-css-content h3 {
+    font-family: var(--font-handwritten);
+    color: var(--text-light);
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.7);
+}
+.gallery-item-css-content p {
+    font-size: 1em;
+    color: var(--text-light);
+    line-height: 1.5;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+#gallery-stargazing {
+    background: radial-gradient(ellipse at center, var(--deep-space-blue) 30%, var(--galaxy-blue) 70%),
+                repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.03) 5px, rgba(255,255,255,0.03) 10px);
+    border: 2px solid var(--soft-purple);
+}
+#gallery-aurora {
+    background: linear-gradient(160deg, var(--love-pink), var(--soft-purple), var(--stardust-pink));
+    background-size: 200% 200%; /* Needs to be larger than 100% for movement */
+    animation: auroraFlow 10s infinite alternate ease-in-out;
+    border: 2px solid var(--love-pink);
+}
+@keyframes auroraFlow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+#gallery-aurora .gallery-item-css-content h3, 
+#gallery-aurora .gallery-item-css-content p { color: var(--deep-space-blue); text-shadow: 0 0 5px var(--text-light); }
+
+#gallery-exploration {
+    background: linear-gradient(45deg, var(--galaxy-blue), var(--blush-red), var(--rose-gold));
+    background-size: 200% 200%;
+    animation: galaxyShift 12s infinite alternate ease-in-out;
+    border: 2px solid var(--blush-red);
+}
+@keyframes galaxyShift {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+#gallery-future {
+     background: repeating-radial-gradient(circle, rgba(248, 80, 160, 0.3) 0, rgba(248, 80, 160, 0.3) 5px, rgba(30, 42, 61, 0.5) 5px, rgba(30, 42, 61, 0.5) 10px),
+                 linear-gradient(var(--deep-space-blue), var(--galaxy-blue));
+    border: 2px solid var(--stardust-pink);
+}
+
+/* Timeline Page */
+.timeline {
+    position: relative;
+    width: 100%;
+    padding: 20px 0;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: linear-gradient(var(--love-pink), var(--stardust-pink), var(--soft-purple));
+    border-radius: 3px;
+    box-shadow: 0 0 10px var(--love-pink);
+}
+.timeline-item {
+    padding: 25px 40px;
+    position: relative;
+    width: 50%;
+    margin-bottom: 35px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease;
+}
+.timeline-item:hover {
+    background-color: rgba(255, 105, 180, 0.1);
+}
+.timeline-item:nth-child(odd) {
+    left: 0;
+    padding-right: 65px;
+    text-align: right;
+}
+.timeline-item:nth-child(even) {
+    left: 50%;
+    padding-left: 65px;
+    text-align: left;
+}
+.timeline-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--deep-space-blue);
+    border: 4px solid var(--love-pink);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8em;
+    z-index: 1;
+    box-shadow: 0 0 18px var(--love-pink);
+    transition: transform 0.3s ease;
+}
+.timeline-item:hover .timeline-icon {
+    transform: translateY(-50%) scale(1.1) rotate(10deg);
+}
+.timeline-item:nth-child(odd) .timeline-icon { right: -25px; }
+.timeline-item:nth-child(even) .timeline-icon { left: -25px; }
+
+.timeline-content h2 {
+    color: var(--stardust-pink);
+    margin-bottom: 10px;
+    font-size: 1.7em;
+    font-family: var(--font-main);
+}
+.timeline-content p {
+    font-size: 1.05em;
+    line-height: 1.7;
+}
+.timeline-content strong {
+    color: var(--love-pink);
+}
+
+/* Individual Love Note Pages */
+.love-note-page {
+    background: rgba(255, 105, 180, 0.15);
+    padding: 45px;
+    border-radius: 20px;
+    border: 2px solid var(--love-pink);
+    text-align: left;
+    line-height: 1.9;
+    font-size: 1.2em;
+    box-shadow: 0 0 35px rgba(255, 105, 180, 0.35);
+}
+.love-note-page p {
+    margin-bottom: 25px;
+}
+.love-note-page strong, .love-note-page em, .love-note-page mark {
+    color: var(--stardust-pink);
+    background: none;
+    text-shadow: 0 0 5px var(--stardust-pink);
+    font-weight: bold;
+}
+.love-note-page .emoji {
+    font-size: 1.2em; /* slightly smaller than before, relative to new base */
+    vertical-align: middle;
+    display: inline-block; /* helps with vertical alignment consistency */
+    line-height: 1;
+}
+
+
+/* --- Animations --- */
+.fade-in-up { opacity: 0; transform: translateY(30px); animation: fadeInUp 0.8s ease-out forwards; }
+.fade-in-left { opacity: 0; transform: translateX(-50px); animation: fadeInLeft 0.8s ease-out forwards; }
+.fade-in-right { opacity: 0; transform: translateX(50px); animation: fadeInRight 0.8s ease-out forwards; }
+
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeInRight { to { opacity: 1; transform: translateX(0); } }
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+.delay-4 { animation-delay: 1.2s; }
+.delay-5 { animation-delay: 1.5s; }
+.delay-6 { animation-delay: 1.8s; }
+.delay-7 { animation-delay: 2.1s; }
+.delay-8 { animation-delay: 2.4s; }
+
+
+/* --- Floating Decorative Elements --- */
+.floating-element {
+    position: fixed;
+    font-size: 20px;
+    opacity: 0;
+    animation-name: floatComposite, fadeInElement; /* Composite animation name */
+    animation-timing-function: ease-in-out, ease-out;
+    animation-iteration-count: infinite, 1;
+    animation-fill-mode: both, forwards; /* fadeInElement uses forwards */
+    pointer-events: none;
+    z-index: 5;
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+}
+
+@keyframes floatComposite {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(-20px) translateX(15px) rotate(10deg); }
+    50% { transform: translateY(10px) translateX(-10px) rotate(-5deg); }
+    75% { transform: translateY(-15px) translateX(20px) rotate(5deg); }
+}
+@keyframes fadeInElement {
+    to { opacity: 0.8; }
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    .main-header nav { margin-top: 15px; }
+    .main-header nav ul li a { margin: 0 5px; font-size: 0.95em; padding: 6px 10px; }
+    .logo { font-size: 2.2em; }
+
+    .index-content h1 { font-size: 3.8em; }
+    .index-content p { font-size: 1.3em; }
+    .page-title { font-size: 3em; }
+    .page-content { width: 90%; }
+
+    .timeline::before { left: 30px; /* Adjusted for icon size and item padding */ }
+    .timeline-item {
+        width: calc(100% - 40px); /* Make space for timeline line to be visible */
+        left: 40px !important; /* Align items to the right of the line */
+        padding-left: 20px; /* Main padding for content after line and icon space */
+        padding-right: 20px;
+        text-align: left !important;
+        margin-left: 0; /* Remove any residual offset from desktop */
+    }
+     .timeline-item:nth-child(odd), .timeline-item:nth-child(even) {
+        left: 40px !important;
+    }
+
+    .timeline-icon {
+        left: -25px !important; /* Relative to parent .timeline-item (which is shifted by 40px) effectively positioning it on the 30px line */
+        /* Calculation: Parent left 40px, icon relative -25px. Target for icon center on line: Line at 30px. Parent box starts at 40. So -10px to hit line. But icon is 50px wide, so -25px to center. This is relative to .timeline-item */
+        width: 40px; height: 40px; font-size: 1.5em;
+    }
+
+
+    .gallery-grid, .letters-grid { grid-template-columns: 1fr; }
+    .love-note-page { padding: 25px; font-size: 1.1em; }
+    .love-quote { font-size: 1.6em; padding: 20px;}
+}
+
+@media (max-width: 480px) {
+    .index-content h1 { font-size: 3em; }
+    .page-title { font-size: 2.5em; }
+    .cta-button { font-size: 1.1em; padding: 15px 25px; }
+    .main-header nav ul li a { font-size: 0.85em; margin: 0 3px; padding: 5px 8px; }
+}
